@@ -1,10 +1,12 @@
+import torch
 from TTS.api import TTS
 
 
 class AudioModel:
     def __init__(self, storage_path: str = ""):
         self.storage_path = storage_path
-        self.tts = TTS(model_name="tts_models/en/vctk/vits", progress_bar=True)
+        device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.tts = TTS(model_name="tts_models/en/vctk/vits", progress_bar=True).to(device)
         self.speaker = self.tts.speakers[104]
 
     def generate_audio(self, content: str, filename: str):
